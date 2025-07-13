@@ -1,6 +1,6 @@
 ## Railway Deployment
 
-This example uses [Railway](https://railway.com?referralCode=pa1ar) templates. 
+This example uses <a href="https://railway.com?referralCode=pa1ar" target="_blank">Railway</a> templates. 
 
 Railway is a cloud development platform that enables developers to deploy, manage and scale applications and databases with minimal configuration.
 
@@ -8,12 +8,12 @@ Railway templates we provide are pointing to the open-source repositories of Mas
 
 ### Prerequisites
 
-- [Blockfrost](https://blockfrost.io/) API key
-- [Railway account](https://railway.com?referralCode=pa1ar) (free trial is 30 days or $5)
+- <a href="https://blockfrost.io/" target="_blank">Blockfrost</a> API key
+- <a href="https://railway.com?referralCode=pa1ar" target="_blank">Railway account</a> (free trial is 30 days or $5)
 
 ### How to Deploy
 
-1. **Deploy [Masumi Payment Service](https://github.com/masumi-network/masumi-payment-service)**:  
+1. **Deploy <a href="https://github.com/masumi-network/masumi-payment-service" target="_blank">Masumi Payment Service</a>**:  
 
     [![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/masumi-payment-service-official?referralCode=padierfind)
    - Use the template in an existing or new project (in existing project, "Create" > "Template" > search for "Masumi Payment Service")
@@ -24,7 +24,7 @@ Railway templates we provide are pointing to the open-source repositories of Mas
    - Test at public URL `/admin` or `/docs`. Your default admin key (used to login to the admin panel and sign transactions) is in your variables. **Change it on the admin panel.**
    - **Important:** Masumi API endpoints must include `/api/v1/`!  Be sure to append that slugs in the next steps (deploying agentic service).
 
-2. **Deploy [Agent Service API Wrapper](https://github.com/masumi-network/agentic-service-wrapper)**:  
+2. **Deploy <a href="https://github.com/masumi-network/agentic-service-wrapper" target="_blank">Agent Service API Wrapper</a>**:  
 
     [![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/masumi-compliant-service-api-official?referralCode=padierfind)
    - Make sure your Masumi payment service is up and running
@@ -35,7 +35,7 @@ Railway templates we provide are pointing to the open-source repositories of Mas
 
 3. **Configure Agent**
    - Go to Payment Service admin panel, top up selling wallet
-   - Register agent via Agent Service URL (you need to have funds on your selling wallet, read the [docs](https://docs.masumi.network/))
+   - Register agent via Agent Service URL (you need to have funds on your selling wallet, read the <a href="https://docs.masumi.network/" target="_blank">docs</a>)
    - Retrieve Agent ID aka Asset ID
    - Check Agent Service variables:
      - `SELLER_VKEY`: vkey (verificatin key) of selling wallet used to register agent, get it from the admin panel of your payment service
@@ -51,7 +51,7 @@ Railway templates we provide are pointing to the open-source repositories of Mas
 
 ## How to Customize
 
-1. Fork this [repository](https://github.com/masumi-network/agentic-service-wrapper)
+1. Fork this <a href="https://github.com/masumi-network/agentic-service-wrapper" target="_blank">repository</a>
 2. Edit `agentic_service.py` to implement your agent logic
 3. Update `input_schema` in main.py to match your input requirements
 4. Run or deploy your customized version using the Railway (you will just need to replace the repository in settings of the service to point to your fork).
