@@ -29,18 +29,16 @@ Railway templates we provide are pointing to the open-source repositories of Mas
     [![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/masumi-compliant-service-api-official?referralCode=padierfind)
    - Make sure your Masumi payment service is up and running
    - Provide `PAYMENT_SERVICE_URL` in variables (format: `https://your-instance-of-masumi.up.railway.app/api/v1`, the main part of the URL can differ, point is - don't forget the `/api/v1` slugs)
+   - Provide `PAYMENT_API_KEY` (your Masumi Payment Service Admin Key)
+   - Provide `SELLER_VKEY` that you can find in the admin panel by clicking on your Selling wallet , or by calling the GET /payment-source/ endpoint of your deployed Masumi Payment Service. 
    - Wait for deployment to complete
    - Generate public URL in settings of the service
    - Check the swagger at `/docs`
 
-3. **Configure Agent**
-   - Go to Payment Service admin panel, top up selling wallet
-   - Register agent via Agent Service URL (you need to have funds on your selling wallet, read the <a href="https://docs.masumi.network/" target="_blank">docs</a>)
+3. **Register Agent on Masumi**
+   - Go to Payment Service admin panel, top up selling wallet (you can use <a href="https://dispenser.masumi.network/"target="_blank">Masumi tADA dispencer</a>)
+   - Register agent via Agent Service URL (you need to have funds on your selling wallet)
    - Retrieve Agent ID aka Asset ID
-   - Check Agent Service variables:
-     - `SELLER_VKEY`: vkey (verificatin key) of selling wallet used to register agent, get it from the admin panel of your payment service
-     - `PAYMENT_API_KEY`: payment token or admin key for Payment Service (you have used it to login to the admin panel)
-     - `PAYMENT_SERVICE_URL`: URL of your Payment Service
 
 4. **Test Integration**
    - Start job via Agent Service
