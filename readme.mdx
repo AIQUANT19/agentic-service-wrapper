@@ -62,15 +62,20 @@ Railway templates we provide are pointing to the open-source repositories of Mas
 
 ```bash
 cp .env.example .env
-# edit .env with your config
+```
 
+Edit .env with your config
+
+```bash
 uv venv
 source .venv/bin/activate
 uv pip sync requirements.txt
-
 python get_payment_source_info.py
-# add SELLER_VKEY to .env
+``` 
 
+Add SELLER_VKEY to .env
+
+```bash
 python main.py api
 ```
 
