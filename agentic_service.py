@@ -5,8 +5,12 @@ from langchain_openai import ChatOpenAI
 from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_tavily import TavilySearch
+from dotenv import load_dotenv
+
+load_dotenv()
 
 WEATHERSTACK_API_KEY = os.getenv("WEATHERSTACK_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 llm = ChatOpenAI(
     model="gpt-4o-mini",

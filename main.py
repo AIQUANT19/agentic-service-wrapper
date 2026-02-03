@@ -11,13 +11,16 @@ from masumi.payment import Payment
 from agentic_service import get_weather_update
 from logging_config import setup_logging
 import cuid2
+import hashlib
+import uuid
+import asyncio
 
 #region congif
 # Configure logging
 logger = setup_logging()
 
 # Load environment variables
-load_dotenv(override=True)
+load_dotenv()
 
 # Retrieve API Keys and URLs
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -176,7 +179,8 @@ async def start_job(data: StartJobRequest):
             )
         
         # generate identifier_from_purchaser internally using cuid2
-        identifier_from_purchaser = cuid2.Cuid().generate()
+        # identifier_from_purchaser = cuid2.Cuid().generate()
+        identifier_from_purchaser = hashlib.sha256(uuid.uuid4().hex.encode()).hexdigest()[:26]
         logger.info(f"Generated identifier_from_purchaser: {identifier_from_purchaser}")
         
         # convert input_data array to dict for internal processing
