@@ -8,7 +8,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from masumi.config import Config
 from masumi.payment import Payment
-from agentic_service import get_agentic_service
+from agentic_service import get_weather_update
 from logging_config import setup_logging
 import cuid2
 
@@ -134,7 +134,7 @@ class ProvideInputRequest(BaseModel):
 async def execute_agentic_task(input_data: dict) -> object:
     """ Execute task """
     logger.info(f"starting task with input: {input_data}")
-    service = get_agentic_service(logger=logger)
+    service = get_weather_update(logger=logger)
     result = await service.execute_task(input_data)
     logger.info("task completed successfully")
     return result
