@@ -16,6 +16,10 @@ llm = ChatOpenAI(
 
 @tool
 def get_weather_update(city_name: str) -> str:
+
+    """
+    Get current weather for a given city name.
+    """
     if not WEATHERSTACK_API_KEY:
         return "Missing WEATHERSTACK_API_KEY"
 
