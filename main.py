@@ -240,7 +240,10 @@ async def start_job(data: StartJobRequest):
         # Start monitoring the payment status
         payment_instances[job_id] = payment
         logger.info(f"Starting payment status monitoring for job {job_id}")
-        await payment.start_status_monitoring(payment_callback)
+        # await payment.start_status_monitoring(payment_callback)
+        asyncio.create_task(
+            payment.start_status_monitoring(payment_callback)
+        )
 
         # Get SELLER_VKEY from environment
         seller_vkey = os.getenv("SELLER_VKEY", "")
@@ -410,10 +413,11 @@ async def input_schema():
             {
                 "id": "input_string",
                 "type": "string",
-                "name": "Text to Reverse",
+                "name": "Task Description",
+                "required": True,
                 "data": {
-                    "description": "The text input that will be reversed",
-                    "placeholder": "Enter text to reverse here"
+                    "description": "Enter any city",
+                    "placeholder": "Weather in Mumbai"
                 }
             }
         ]

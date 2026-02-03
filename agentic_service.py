@@ -1,50 +1,64 @@
-class ServiceResult:
-    """Simple result object to mimic CrewAI result structure"""
-    def __init__(self, original_text: str, reversed_text: str):
-        self.original_text = original_text
-        self.reversed_text = reversed_text
-        self.raw = reversed_text
-        self.json_dict = {
-            "original_text": original_text,
-            "reversed_text": reversed_text,
-            "task": "reverse_echo"
-        }
+import os
+import asyncio
+import requests
+from langchain_openai import ChatOpenAI
+from langchain.agents import create_agent
+from langchain.tools import tool
+from langchain_tavily import TavilySearch
 
-class AgenticService:
-    """Simple service that reverses input text"""
-    
-    def __init__(self, logger=None):
-        self.logger = logger
-    
-    async def execute_task(self, input_data: dict) -> ServiceResult:
-        """
-        Execute reverse echo task
-        
-        Args:
-            input_data: Dictionary containing 'input_string' key
-            
-        Returns:
-            ServiceResult with reversed text
-        """
-        text = input_data.get("input_string", "")
-        
-        if self.logger:
-            self.logger.info(f"Processing reverse echo for text: '{text[:50]}{'...' if len(text) > 50 else ''}'")
-        
-        # simple reverse operation
-        reversed_text = text[::-1]
-        
-        if self.logger:
-            self.logger.info(f"Reverse echo completed: '{reversed_text[:50]}{'...' if len(reversed_text) > 50 else ''}'")
-        
-        return ServiceResult(text, reversed_text)
+WEATHERSTACK_API_KEY = os.getenv("WEATHERSTACK_API_KEY")
 
-def get_agentic_service(logger=None):
+llm = ChatOpenAI(
+    model="gpt-4o-mini",
+    temperature=0.4,
+    max_tokens=500,
+)
+
+@tool
+def get_weather_update(city_name: str) -> str:
+    if not WEATHERSTACK_API_KEY:
+        return "Missing WEATHERSTACK_API_KEY"
+
+    url = f"http://api.weatherstack.com/current?access_key={WEATHERSTACK_API_KEY}&query={city_name}"
+    r = requests.get(url, timeout=10)
+    data = r.json()
+
+    if "error" in data:
+        return data["error"].get("info", "Weather API error")
+
+    loc = data["location"]["name"]
+    temp = data["current"]["temperature"]
+    desc = data["current"]["weather_descriptions"][0]
+
+    return f"Weather in {loc}: {desc}, {temp}°C"
+
+
+tools = [
+    TavilySearch(max_results=3),
+    get_weather_update,
+]
+
+agent = create_agent(
+    model=llm,
+    tools=tools,
+    system_prompt="You are a helpful weather assistant.",
+)
+
+
+async def process_request(input_data: dict) -> str:
     """
-    Factory function to get the appropriate service for this branch.
-    This enables easy switching between different implementations across branches.
-    
-    Main branch: Simple text reversal service (no dependencies)
-    Other branches: CrewAI, LangChain, n8n implementations
+    THIS is what Masumi calls after payment.
     """
-    return AgenticService(logger) 
+
+    text = input_data.get("text", "")
+
+    payload = {
+        "messages": [
+            {"role": "user", "content": text}
+        ]
+    }
+
+    result = await asyncio.to_thread(agent.invoke, payload)
+
+    msgs = result.get("messages", [])
+    return msgs[-1].content if msgs else str(result)
